@@ -15,7 +15,7 @@ If (!(Test-Path "$SpeedFanFolder$LogName")) {
 
 $header = ((Get-Content "$SpeedFanFolder\$LogName" -TotalCount 1) -creplace ("\x00","")).split("`t")
 
-#Если указан аргумент -Json*, то отдаем в JSON массиве список сенсоров взятых из лога
+
 If ($Json) {
  
     $Voltages = "VTT","VDIMM AB","VDIMM CD","VDIMM EFGH","+1.5 V","3.3V","+3.3VSB","5V","+5VSB","12V","VBAT","Vcore","AVcc","AVCC","3Vcc","3Vsb","Vtt","+12V","3.3VCC","VDIMM","5VCC","-12V","VSB"
@@ -62,7 +62,7 @@ If ($Json) {
     $JsonResult
     Break}
 
-#Если передан аргумент -Sens "string", то ищем в логе последнее значение колонки string и отдаем
+
 If ($Sens) {
     If (!(Test-Path $PSScriptRoot\$Sens)) {
         New-Item -path $PSScriptRoot -Name $Sens -ItemType file | Out-Null
