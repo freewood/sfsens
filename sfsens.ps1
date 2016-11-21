@@ -1,4 +1,12 @@
-﻿Param([switch]$Json,[string]$Sens)
+Param([switch]$Json,[string]$Sens)
+
+if ($PSBoundParameters.Count -ne "1") {
+    write-host "`nUsage:`t./sfsens.ps1 <parameter> [sensorname]`n"
+    write-host "`t-SFProc - return `"0`" if speedfan.exe process not found, 1 otherwise"
+    write-host "`t-Json - json array with all sensors logged by speedfan"
+    write-host "`t-Sens `$SENSORNAME - get last value for `$SENSORNAME from speedfan log file"
+    Break
+}
 
 #PoSh 2.0 compatible
 $PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition
@@ -15,6 +23,15 @@ If (!(Test-Path "$SpeedFanFolder$LogName")) {
 
 $header = ((Get-Content "$SpeedFanFolder\$LogName" -TotalCount 1) -creplace ("\x00","")).split("`t")
 
+If ($SFProc) {
+    $sfprocess = Get-Process speedfan -ErrorAction SilentlyContinue
+    If (-Not $sfprocess) {
+        Write-Output "0"
+        Break
+    }
+    Write-Output "1"
+    Break
+}
 
 If ($Json) {
  
