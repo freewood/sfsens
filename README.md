@@ -16,6 +16,9 @@ UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program 
 UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
 UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
 
+А так же делаем параметр Timeout побольше:
+Timeout=15
+
 Проверьте путь, где у вас будет лежать sfsens.ps1, у меня он лежит в отдельной папке внутри заббикс-агента.
 При работе sfsens создает текстовые файлы в своем каталоге с названием сенсоров которые опрашивает, в них он записывает время
 последнего опроса, которое тоже берется из логфайла. Это нужно для определения новое это значение или нет.
@@ -41,6 +44,9 @@ In zabbix-agent conf file add next UserParameters:
 UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Json
 UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
 UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
+
+Also increase Timeout parameter:
+Timeout=15
 
 Check the path to sfsens.ps1 file.
 SFSens script create txt files in his own directory with timestamps in it.
