@@ -1,6 +1,8 @@
 # sfsens
 SpeedFan logfile parser on powershell for Zabbix LLD
 
+==========================================================================================
+
 Задался целью мониторить температуру и прочие данные с железных серверов под виндой.
 Ничего "умнее" не придумал, чем парсить лог-файл программки SpeedFan, благо она отдает все значение в превосходной CSVшке.
 
@@ -24,6 +26,7 @@ UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Fil
 
 Вариант рабочий, но черновой. Использовать на свой страх и риск.
 
+==========================================================================================
 
 This script parse speedfan log file and return values to zabbix via LLD items.
 
