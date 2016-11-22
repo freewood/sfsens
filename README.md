@@ -1,5 +1,5 @@
 # sfsens
-SpeedFan logfile parser on powershell for Zabbix LLD
+SpeedFan logfile parser on powershell for Zabbix LLD. Monitor temperature of hardware on Windows Servers.
 
 ==========================================================================================
 
