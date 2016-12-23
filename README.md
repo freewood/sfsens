@@ -8,18 +8,20 @@ SpeedFan logfile parser on powershell for Zabbix LLD. Monitor temperature of har
 
 ## Установка.
 
-Устанавливаем SpeedFan (если ставите не в Program Files, то нужно менять в скрипте путь к логфайлу).
+Устанавливаем SpeedFan (если ставите не в `Program Files`, то нужно менять в скрипте путь к логфайлу, переменная `$LogFilePath`).
 Включаем в нем логирование нужных параметров. Обязательно ставим разделитель точку для значений в логе.
 По желанию, после настройки, можно его повесить в качестве службы, рекомендую для этого программку nssm.
 
 В заббикс-агенте на целевой машине любым удобным способом добавляем следующие UserParameter:
-- UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Json
-- UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
-- UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
+```
+UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Json
+UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
+UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
+```
 
 А так же делаем параметр Timeout побольше:
 
-Timeout=15
+`Timeout=15`
 
 Проверьте путь, где у вас будет лежать `sfsens.ps1`, у меня он лежит в отдельной папке внутри заббикс-агента.
 При работе sfsens создает текстовые файлы в своем каталоге с названием сенсоров которые опрашивает, в них он записывает время
@@ -35,22 +37,24 @@ Timeout=15
 
 This script parse speedfan log file and return values to zabbix via LLD items.
 
-Sorry for my english. :)
-
 ## Installation.
 
-Install SpeedFan (if you change default path, than you should change it in the script).
+Sorry for my english. :)
+
+Install SpeedFan (if you changed default path, than you should change it in the script, `$LogFilePath` variable).
 Enable log, be sure that separator for log values is set to dot.
 If you want to run SpeedFan as a service, i recommend to use NSSM for it.
 
 In zabbix-agent conf file add next UserParameters:
-- UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Json
-- UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
-- UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
+```
+UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Json
+UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
+UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
+```
 
 Also increase Timeout parameter:
 
-Timeout=15
+`Timeout=15`
 
 Check the path to sfsens.ps1 file.
 SFSens script create txt files in his own directory with timestamps in it.
