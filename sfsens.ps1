@@ -8,7 +8,7 @@ If ($PSBoundParameters.Count -ne "1") {
     Break
 }
 
-If (((Get-WmiObject Win32_OperatingSystem).OSArchitecture) -eq "64-bit") {
+If (((Get-WmiObject Win32_OperatingSystem).OSArchitecture) -like "64*") {
     $LogFilePath = ${env:ProgramFiles(x86)}+"\SpeedFan\"+"SFLog"+(Get-Date -Format yyyyMMdd)+".csv"
 }
 Else {
