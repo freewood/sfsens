@@ -15,11 +15,6 @@ Else {
     $LogFilePath = ${env:ProgramFiles}+"\SpeedFan\"+"SFLog"+(Get-Date -Format yyyyMMdd)+".csv"
 }
 
-If (!(Test-Path $LogFilePath)) {
-    Write-Output "Error: Cannot find speedfan log file"
-}
-
-#PoSh 2.0 compatible
 $PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition
 
 If ($SFProc) {
@@ -99,13 +94,7 @@ If ($Sens) {
         New-Item -path $PSScriptRoot -Name $Sens -ItemType file | Out-Null
     }
 
-    #PoSh 3.0+ feature
-    #[int]$index = $header::indexof($header,"$Sens")
-
     [int]$index = (0..($header.Count-1)) | Where-Object {$header[$_] -ceq "$Sens"}
-
-    #PoSh 3.0+ feature
-    #$LastRow = (Get-Content "$LogFilePath" -Tail 1).split("`t")
 
     $LastRow = (Get-Content "$LogFilePath" | Select-Object -Last 1).split("`t")
     [int]$Marker = $LastRow[0]
