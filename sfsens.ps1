@@ -86,7 +86,7 @@ If ($Json) {
 
 If ($Sens) {
 
-    $LWTimeSec = ((Get-Date) - (Get-ItemPropertyValue $LogFilePath LastWriteTime)).TotalSeconds
+    $LWTimeSec = (((Get-Date) - (Get-ChildItem $LogFilePath).LastWriteTime)).TotalSeconds
 
     If ($LWTimeSec -gt 5) {
         Write-Host "Error: SpeedFan log outdated!"
