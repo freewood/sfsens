@@ -24,8 +24,6 @@ UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Fil
 `Timeout=15`
 
 Проверьте путь, где у вас будет лежать `sfsens.ps1`, у меня он лежит в отдельной папке внутри заббикс-агента.
-При работе sfsens создает текстовые файлы в своем каталоге с названием сенсоров которые опрашивает, в них он записывает время
-последнего опроса, которое тоже берется из логфайла. Это нужно для определения новое это значение или нет.
 
 После этого создаем правило LLD в заббиксе. Для обнаружения используем ключ `sf.discovery`, для прототипов итемов `sf.sens[MACROS]`.
 Список макросов можно получить запросив у агента ключ `sf.discovery`, он выдаст возможные варианты в виде json массива.
@@ -57,8 +55,6 @@ Also increase Timeout parameter:
 `Timeout=15`
 
 Check the path to sfsens.ps1 file.
-SFSens script create txt files in his own directory with timestamps in it.
-It's needed to determine is this last value, or previous.
 
 After this we create LLD Discovery item in zabbix with `sf.discovery` key, and items prototype with `sf.sens[MACROS]` key.
 List of MACROSes you can obtain by viewing output of `sf.discovery` key on target host.
