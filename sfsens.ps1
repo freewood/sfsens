@@ -5,7 +5,7 @@ If ($PSBoundParameters.Count -ne "1") {
     write-host "`t-SFProc - return `"0`" if speedfan.exe process not found, 1 otherwise"
     write-host "`t-Json - json array with all sensors logged by speedfan"
     write-host "`t-Sens `<sensorname> - get last value for `$SENSORNAME from speedfan log file"
-    Break
+    Exit
 }
 
 If (((Get-WmiObject Win32_OperatingSystem).OSArchitecture) -like "64*") {
@@ -15,23 +15,22 @@ Else {
     $LogFilePath = ${env:ProgramFiles}+"\SpeedFan\"+"SFLog"+(Get-Date -Format yyyyMMdd)+".csv"
 }
 
+#PoSh 2.0 compatible
 $PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition
 
 If ($SFProc) {
     $sfprocess = Get-Process speedfan -ErrorAction SilentlyContinue
     If (-Not $sfprocess) {
         Write-Output "0"
-        Break
+        Exit
     }
     Write-Output "1"
-    Break
+    Exit
 }
 
 If (!(Test-Path "$LogFilePath")) {
-
-    return "Error: SpeedFan log file not found!"
-    Break
-
+    Write-Output "Error: SpeedFan log file not found!"
+    Exit
 }
 
 #Some headers have "nul" symbol at the end, we cut it and make array of headers
@@ -81,28 +80,24 @@ If ($Json) {
 
     $JsonResult = "{`r`n"+"`t`"data`":[`n"+$JsonResult+"`t]`n"+"}`n"
     $JsonResult
-    Break
+    Exit
 }
 
 
 If ($Sens) {
-    $MarkerFile = $Sens
-    If ($Sens -eq "aux") {
-        $MarkerFile = "_"+$MarkerFile
-    }
-    If (!(Test-Path $PSScriptRoot\$MarkerFile)) {
-        New-Item -path $PSScriptRoot -Name $Sens -ItemType file | Out-Null
+
+    $LWTimeSec = ((Get-Date) - (Get-ItemPropertyValue $LogFilePath LastWriteTime)).TotalSeconds
+
+    If ($LWTimeSec -gt 5) {
+        Write-Host "Error: SpeedFan log outdated!"
+        Exit
     }
 
     [int]$index = (0..($header.Count-1)) | Where-Object {$header[$_] -ceq "$Sens"}
 
     $LastRow = (Get-Content "$LogFilePath" | Select-Object -Last 1).split("`t")
-    [int]$Marker = $LastRow[0]
 
-    If ((Get-Content "$PSScriptRoot\$Sens") -cne ($Marker)) {
-        $SensResult = $LastRow[$index]
-        $Marker | Out-File "$PSScriptRoot\$Sens"
-        $SensResult
-    }
-    Break
+    $LastRow[$index]
+
+    Exit
 }
