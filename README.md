@@ -14,14 +14,14 @@ SpeedFan logfile parser on powershell for Zabbix LLD. Monitor temperature of har
 
 В заббикс-агенте на целевой машине любым удобным способом добавляем следующие UserParameter:
 ```
-UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Json
-UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
-UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
+UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens.ps1" -Json
+UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens.ps1" -Sens "$1"
+UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens.ps1" -SFProc
 ```
 
 А так же делаем параметр Timeout побольше:
 
-`Timeout=15`
+`Timeout=10`
 
 Проверьте путь, где у вас будет лежать `sfsens.ps1`, у меня он лежит в отдельной папке внутри заббикс-агента.
 
@@ -45,14 +45,14 @@ If you want to run SpeedFan as a service, i recommend to use NSSM for it.
 
 In zabbix-agent conf file add next UserParameters:
 ```
-UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Json
-UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -Sens "$1"
-UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens\sfsens.ps1" -SFProc
+UserParameter=sf.discovery,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens.ps1" -Json
+UserParameter=sf.sens[*],powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens.ps1" -Sens "$1"
+UserParameter=sf.sfproc,powershell -executionpolicy bypass -file "c:\Program Files\Zabbix Agent\sfsens.ps1" -SFProc
 ```
 
 Also increase Timeout parameter:
 
-`Timeout=15`
+`Timeout=10`
 
 Check the path to sfsens.ps1 file.
 
