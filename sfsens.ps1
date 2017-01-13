@@ -1,10 +1,41 @@
-Param([switch]$SFProc,[switch]$Json,[string]$Sens)
+<#
+.SYNOPSIS
+SpeedFan log file parser.
+
+.DESCRIPTION
+Generate JSON with selected sensors and return current value for desired sensor
+
+.EXAMPLE
+.\sfsens.ps1 -SFProc
+This will return "1" if speedfan.exe process exist, otherwise it will return "0"
+
+.EXAMPLE
+.\sfsens.ps1 -Json
+This will return JSON array with all sensors logged by SpeedFan
+
+.EXAMPLE
+.\sfsens.ps1 -Sens "SensorName"
+This will return current value for "SensorName"
+
+.LINK
+https://github.com/freewood/sfsens
+#>
+
+Param(
+    [Parameter(Position=0)]
+    [switch]$SFProc,
+    
+    [Parameter(Position=0)]
+    [switch]$Json,
+
+    [Parameter(Position=0)]
+    [string]$Sens
+)
+
+$PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition
 
 If ($PSBoundParameters.Count -ne "1") {
-    write-host "`nUsage:`t./sfsens.ps1 <parameter> [sensorname]`n"
-    write-host "`t-SFProc - return `"0`" if speedfan.exe process not found, 1 otherwise"
-    write-host "`t-Json - json array with all sensors logged by speedfan"
-    write-host "`t-Sens `<sensorname> - get last value for `$SENSORNAME from speedfan log file"
+    Write-Host "Error: Use only one argument. View 'Get-Help .\sfsens.ps1 -Examples'"
     Exit
 }
 
@@ -15,8 +46,10 @@ Else {
     $LogFilePath = ${env:ProgramFiles}+"\SpeedFan\"+"SFLog"+(Get-Date -Format yyyyMMdd)+".csv"
 }
 
-#PoSh 2.0 compatible
-$PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition
+If (!(Test-Path "$LogFilePath")) {
+    Write-Output "Error: SpeedFan log file not found!"
+    Exit
+}
 
 If ($SFProc) {
     $sfprocess = Get-Process speedfan -ErrorAction SilentlyContinue
@@ -25,11 +58,6 @@ If ($SFProc) {
         Exit
     }
     Write-Output "1"
-    Exit
-}
-
-If (!(Test-Path "$LogFilePath")) {
-    Write-Output "Error: SpeedFan log file not found!"
     Exit
 }
 
