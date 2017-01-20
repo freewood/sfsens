@@ -21,16 +21,7 @@ This will return current value for "SensorName"
 https://github.com/freewood/sfsens
 #>
 
-Param(
-    [Parameter(Position=0)]
-    [switch]$SFProc,
-    
-    [Parameter(Position=0)]
-    [switch]$Json,
-
-    [Parameter(Position=0)]
-    [string]$Sens
-)
+Param( [switch]$SFProc, [switch]$Json, [string]$Sens )
 
 $PSScriptRoot = split-path -parent $MyInvocation.MyCommand.Definition
 
