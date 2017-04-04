@@ -114,9 +114,14 @@ If ($Sens) {
 
     [int]$index = (0..($header.Count-1)) | Where-Object {$header[$_] -ceq "$Sens"}
 
-    $LastRow = (Get-Content "$LogFilePath" | Select-Object -Last 1).split("`t")
+    If ($index -ne 0) {
+        $LastRow = (Get-Content "$LogFilePath" | Select-Object -Last 1).split("`t")
+        $LastRow[$index]
+    }
 
-    $LastRow[$index]
+    Else {
+        Write-Host "Error: Can't find requested sensor!"
+    }
 
     Exit
 }
